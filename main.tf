@@ -67,8 +67,8 @@ resource "port_entity" "skill" {
         each.value.front_matter.description,
         trimspace(try(regexall("(?m)^#\\s+(.+)$", each.value.instructions)[0][0], "Instructions synchronized from ${each.key}.")),
       )
-      instructions = each.value.instructions
-      location     = try(each.value.front_matter.location, var.default_skill_location)
+      instructions  = each.value.instructions
+      location      = try(each.value.front_matter.location, var.default_skill_location)
       source_folder = each.value.source_folder
     }
     array_props = {
