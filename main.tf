@@ -23,6 +23,11 @@ resource "port_blueprint" "skill" {
         enum        = ["global", "project"]
         required    = true
       }
+      source_folder = {
+        title       = "Source Folder"
+        description = "Folder containing the source Markdown skill"
+        required    = true
+      }
     }
     array_props = {
       references = {
@@ -47,9 +52,13 @@ resource "port_entity" "skill" {
     each.value.front_matter.name,
     lower(replace(basename(each.key), ".md", "")),
   )
-  title = try(
-    each.value.front_matter.title,
-    trimspace(try(regexall("(?m)^#\\s+(.+)$", each.value.instructions)[0][0], replace(title(replace(basename(each.key), ".md", "")), "_", " "))),
+  title = format(
+    "[%s] %s",
+    each.value.source_folder,
+    try(
+      each.value.front_matter.title,
+      trimspace(try(regexall("(?m)^#\\s+(.+)$", each.value.instructions)[0][0], replace(title(replace(basename(each.key), ".md", "")), "_", " "))),
+    ),
   )
 
   properties = {
@@ -60,6 +69,7 @@ resource "port_entity" "skill" {
       )
       instructions = each.value.instructions
       location     = try(each.value.front_matter.location, var.default_skill_location)
+      source_folder = each.value.source_folder
     }
     array_props = {
       object_items = {

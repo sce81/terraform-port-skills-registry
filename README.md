@@ -14,7 +14,8 @@ Pass your own registry repository configuration through the root module:
 - `skills_registry_owner` and `skills_registry_repository` are required. They identify
   the GitHub repository containing the Markdown skills to synchronize.
 - `skills_registry_branch` selects the source branch.
-- `skills_registry_path` scopes recursive Markdown discovery. Every discovered file
+- `skills_registry_path` scopes recursive Markdown discovery. Set it to an empty
+  string to discover Markdown files anywhere in the repository. Every discovered file
   becomes a Port skill entity.
 - `skills_registry_token` is required only when that source repository is private. It
   needs read-only Contents access to the source repository.
@@ -26,6 +27,10 @@ Pass your own registry repository configuration through the root module:
 
 The module source is public; it does not need a GitHub token to download. A token is
 only used for reading a private skills repository.
+
+Skill titles are prefixed with the source folder and each entity exposes that folder in
+the required `Source Folder` property. This distinguishes similarly named skills from
+different areas of a repository.
 
 ## State migration
 

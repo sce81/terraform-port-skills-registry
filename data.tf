@@ -52,9 +52,10 @@ data "http" "skill_documents" {
 locals {
   skill_documents = {
     for path, document in data.http.skill_documents : path => {
-      front_matter = try(yamldecode(regexall("(?s)^---\\s*\\n(.*?)\\n---", document.response_body)[0][0]), {})
-      instructions = trimspace(replace(document.response_body, "/(?s)^---\\s*\\n.*?\\n---\\s*\\n?/", ""))
-      source_url   = "https://github.com/${var.skills_registry_owner}/${var.skills_registry_repository}/blob/${var.skills_registry_branch}/${path}"
+      front_matter  = try(yamldecode(regexall("(?s)^---\\s*\\n(.*?)\\n---", document.response_body)[0][0]), {})
+      instructions  = trimspace(replace(document.response_body, "/(?s)^---\\s*\\n.*?\\n---\\s*\\n?/", ""))
+      source_url    = "https://github.com/${var.skills_registry_owner}/${var.skills_registry_repository}/blob/${var.skills_registry_branch}/${path}"
+      source_folder = dirname(path) == "." ? "Repository root" : dirname(path)
     }
   }
 }
