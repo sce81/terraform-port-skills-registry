@@ -6,18 +6,18 @@ resource "port_blueprint" "skill" {
 
   properties = {
     string_props = {
-      description   = {
+      description = {
         title       = "Description"
         description = "What the skill does and when to use it"
         required    = true
       }
-      instructions  = {
+      instructions = {
         title       = "Instructions"
         description = "Instructions from the source Markdown file"
         format      = "markdown"
         required    = true
       }
-      location      = {
+      location = {
         title       = "Location"
         description = "Target installation scope"
         enum        = ["global", "project"]
@@ -63,12 +63,12 @@ resource "port_entity" "skill" {
 
   properties = {
     string_props = {
-      description   = try(
+      description = try(
         each.value.front_matter.description,
         trimspace(try(regexall("(?m)^#\\s+(.+)$", each.value.instructions)[0][0], "Instructions synchronized from ${each.key}.")),
       )
-      instructions  = each.value.instructions
-      location      = try(each.value.front_matter.location, var.default_skill_location)
+      instructions = each.value.instructions
+      location     = try(each.value.front_matter.location, var.default_skill_location)
       source_folder = each.value.source_folder
     }
     array_props = {
