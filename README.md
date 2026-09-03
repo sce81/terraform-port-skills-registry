@@ -9,12 +9,23 @@ module.
 
 ## Inputs
 
-Pass the registry repository, branch, path, and read-only token through the root
-module. `skills_registry_path` scopes recursive Markdown discovery. Every discovered
-file becomes a Port skill entity.
+Pass your own registry repository configuration through the root module:
 
-The module also needs the GitHub Ocean installation and the root repository details
-used to dispatch the `sync-port-skills.yml` workflow.
+- `skills_registry_owner` and `skills_registry_repository` are required. They identify
+  the GitHub repository containing the Markdown skills to synchronize.
+- `skills_registry_branch` selects the source branch.
+- `skills_registry_path` scopes recursive Markdown discovery. Every discovered file
+  becomes a Port skill entity.
+- `skills_registry_token` is required only when that source repository is private. It
+  needs read-only Contents access to the source repository.
+- `default_skill_location` selects `global` or `project` when source front matter does
+  not set `location`.
+- `sync_workflow_roles`, `github_ocean_installation_id`, `github_sync_owner`,
+  `github_sync_repository`, and `github_sync_workflow` configure the Port workflow
+  that dispatches `sync-port-skills.yml`.
+
+The module source is public; it does not need a GitHub token to download. A token is
+only used for reading a private skills repository.
 
 ## State migration
 
